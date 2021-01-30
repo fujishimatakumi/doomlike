@@ -5,10 +5,10 @@ using UnityEngine.AI;
 
 public class EnemySclipt : MonoBehaviour
 {
-    
-    [SerializeField] int m_initHP = 100;
-    [SerializeField] int m_score = 100;
-    [SerializeField] GameObject m_target;
+    [SerializeField] EnemyDataObject m_enemyData;
+   // [SerializeField] int m_initHP = 100;
+    //[SerializeField] int m_score = 100;
+   // [SerializeField] GameObject m_target;
     //エネミーがターゲットの位置を更新するために必要な移動距離
     [SerializeField] float m_updateMag;
     int m_nowHP;
@@ -16,23 +16,23 @@ public class EnemySclipt : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_nowHP = m_initHP;
+        m_nowHP = m_enemyData.GetEnemyData(0).InitHP;
         m_agent = GetComponent<NavMeshAgent>();
-        m_agent.SetDestination(m_target.transform.position);
+        m_enemyData.GetEnemyData(0).SetTarget();
+        m_agent.SetDestination(m_enemyData.GetEnemyData(0).TargetPos);
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateDestination();
-        Debug.Log("onscript");
     }
 
     private void UpdateDestination()
     {
-        if (Vector3.Distance(m_agent.destination,m_target.transform.position) > m_updateMag)
+        if (Vector3.Distance(m_agent.destination, m_enemyData.GetEnemyData(0).TargetPos) > m_updateMag)
         {
-            m_agent.SetDestination(m_target.transform.position);
+            m_agent.SetDestination(m_enemyData.GetEnemyData(0).TargetPos);
         }
     }
 
@@ -53,7 +53,12 @@ public class EnemySclipt : MonoBehaviour
     private void Destroy()
     {
         GameManager gm = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
-        gm.AddScore(m_score);
+        gm.AddScore(m_enemyData.GetEnemyData(0).Score);
         Destroy(this.gameObject);
+    }
+
+    private void FindPlayer()
+    {
+       // m_target = GameObject.FindGameObjectWithTag("Player");
     }
 }
