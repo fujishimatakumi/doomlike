@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class TimeObjcte : MonoBehaviour
 {
-    [SerializeField] float m_addTime = 10;
+    [SerializeField] float _addTime = 10;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             GameManager gm = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
-            gm.AddTime(m_addTime);
+            gm.AddTime(_addTime);
             Destroy(this.gameObject);
         }
     }

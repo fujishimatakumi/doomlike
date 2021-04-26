@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class EnemyGenerater : MonoBehaviour
 {
-    [SerializeField] GameObject m_enemyObj;
-    [SerializeField] int m_enemyLimit = 30;
-    [SerializeField] float m_generateMargin = 1f;
-    [SerializeField] Transform[] m_generateTransfoems;
-    [SerializeField] Transform m_enemysPearent;
+    [SerializeField] GameObject _enemyObj;
+    [SerializeField] int _enemyLimit = 30;
+    [SerializeField] float _generateMargin = 1f;
+    [SerializeField] Transform[] _generateTransfoems;
+    [SerializeField] Transform _enemysPearent;
     float m_counter;
     // Start is called before the first frame update
     void Start()
     {
-        m_counter = m_generateMargin;
+        m_counter = _generateMargin;
     }
 
     // Update is called once per frame
@@ -24,11 +24,11 @@ public class EnemyGenerater : MonoBehaviour
         if (m_counter <= 0)
         {
             
-                int posIndex = Random.Range(0, m_generateTransfoems.Length);
-                GameObject enemyInstans =  Instantiate(m_enemyObj, m_generateTransfoems[posIndex].position, Quaternion.identity);
-                enemyInstans.transform.SetParent(m_enemysPearent);
+                int posIndex = Random.Range(0, _generateTransfoems.Length);
+                GameObject enemyInstans =  Instantiate(_enemyObj, _generateTransfoems[posIndex].position, Quaternion.identity);
+                enemyInstans.transform.SetParent(_enemysPearent);
                 enemyInstans.SetActive(true);
-                m_counter = m_generateMargin;
+                m_counter = _generateMargin;
             
         }
         else
@@ -39,7 +39,7 @@ public class EnemyGenerater : MonoBehaviour
 
     private bool IsRimit()
     {
-        if (m_enemysPearent.transform.childCount >= m_enemyLimit)
+        if (_enemysPearent.transform.childCount >= _enemyLimit)
         {
             return true;
         }

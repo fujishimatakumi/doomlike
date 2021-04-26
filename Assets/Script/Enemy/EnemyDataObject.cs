@@ -5,28 +5,28 @@ using UnityEngine;
 [Serializable]
 public class EnemyDataObject :ScriptableObject
 {
-    [SerializeField]EnemyDataBase[] m_datas;
+    [SerializeField]EnemyDataBase[] _datas;
 
-    public EnemyDataBase GetEnemyData(int level) { return m_datas[level]; }
+    public EnemyDataBase GetEnemyData(int level) { return _datas[level]; }
 }
 [Serializable]
 public class EnemyDataBase
 {
-    [SerializeField] int m_initHP;
-    [SerializeField] int m_score;
-    [SerializeField] TargetType m_targetType;
-    [SerializeField] GameObject m_target;
-    [SerializeField] string m_label;
-    public int InitHP => m_initHP;
-    public int Score => m_score;
-    public Vector3 TargetPos => m_target.transform.position;
+    [SerializeField] int _initHP;
+    [SerializeField] int _score;
+    [SerializeField] TargetType _targetType;
+    [SerializeField] GameObject _target;
+    [SerializeField] string _label;
+    public int InitHP => _initHP;
+    public int Score => _score;
+    public Vector3 TargetPos => _target.transform.position;
 
     public void SetTarget()
     {
-        switch (m_targetType)
+        switch (_targetType)
         {
             case TargetType.Player:
-                m_target = GameObject.FindGameObjectWithTag("Player");
+                _target = GameObject.FindGameObjectWithTag("Player");
                 break;
             default:
                 break;

@@ -5,21 +5,21 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] float m_timeRimit;
-    float m_timeCount;
-    [SerializeField] Text m_timetext;
-    [SerializeField] Text m_scoreText;
-    int m_score;
-    bool m_isTimeCount;
-    public float m_time { get; set; }
+    [SerializeField] float _timeRimit;
+    float _timeCount;
+    [SerializeField] Text _timetext;
+    [SerializeField] Text _scoreText;
+    int _score;
+    bool _isTimeCount;
+    
     // Start is called befotre the first frame update
     void Start()
     {
-        m_timeCount = m_timeRimit;
-        m_timetext.text = m_timeRimit.ToString();
-        m_isTimeCount = true;
-        m_score = 0;
-        m_scoreText.text = m_score.ToString();
+        _timeCount = _timeRimit;
+        _timetext.text = _timeRimit.ToString();
+        _isTimeCount = true;
+        _score = 0;
+        _scoreText.text = _score.ToString();
     }
 
     // Update is called once per frame
@@ -30,33 +30,33 @@ public class GameManager : MonoBehaviour
 
     private void TimeCount()
     {
-        if (m_isTimeCount)
+        if (_isTimeCount)
         {
-            if (m_timeCount <= 0)
+            if (_timeCount <= 0)
             {
                 GameSet();
             }
             else
             {
-                m_timeCount -= Time.deltaTime;
-                m_timetext.text = m_timeCount.ToString("0.00");
+                _timeCount -= Time.deltaTime;
+                _timetext.text = _timeCount.ToString("0.00");
             }
         }
     }
 
     public void AddTime(float time) 
     {
-        m_timeCount += time;
+        _timeCount += time;
     }
 
     public void AddScore(int score)
     {
-        m_score += score;
-        m_scoreText.text = m_score.ToString();
+        _score += score;
+        _scoreText.text = _score.ToString();
     }
     private void GameSet()
     {
-        m_isTimeCount = false;
+        _isTimeCount = false;
         Debug.Log("Gameset");
     }
 }

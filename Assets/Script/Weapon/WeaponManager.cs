@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 //武器の操作を担当するクラス
@@ -11,10 +10,6 @@ public class WeaponManager : MonoBehaviour
     void Start()
     {
         _weaponList = new List<WeaponBase>();
-        _weaponList.Add(new Test());
-        _weaponList.Add(new Test());
-        _weaponList.Add(new Test());
-        _weaponList.Add(new Test());
         _nowWeaponIndex = 0;
     }
 
@@ -61,10 +56,3 @@ public class WeaponManager : MonoBehaviour
     }
 }
 
-class Test : WeaponBase
-{
-    public override void WeaponAction()
-    {
-      
-    }
-}

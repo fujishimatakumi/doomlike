@@ -5,25 +5,25 @@ using UnityEngine.UI;
 
 public class PlayerControlle : MonoBehaviour
 {
-    [SerializeField] float m_speed = 5f;
-    Rigidbody m_rb;
-    AttackType m_nowWepone;
-    [SerializeField] Image m_closeHeare;
-    [SerializeField] float m_distance;
-    [SerializeField] float m_dashspeed = 8f;
-    [SerializeField] LayerMask m_hitLayer;
-    [SerializeField] int m_gunDamage = 100;
+    [SerializeField] float _speed = 5f;
+    Rigidbody _rb;
+    AttackType _nowWepone;
+    [SerializeField] Image _closeHeare;
+    [SerializeField] float _distance;
+    [SerializeField] float _dashspeed = 8f;
+    [SerializeField] LayerMask _hitLayer;
+    [SerializeField] int _gunDamage = 100;
     public EnemySclipt EnemySclipt { get; private set; }
-    GunBase m_base;
-    bool m_isCursor;
+    GunBase _base;
+    bool _isCursor;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_rb = GetComponent<Rigidbody>();
-        m_base = GetComponent<GunBase>();
-        m_nowWepone = AttackType.Gun;
-        m_isCursor = false;
+        _rb = GetComponent<Rigidbody>();
+        _base = GetComponent<GunBase>();
+        _nowWepone = AttackType.Gun;
+        _isCursor = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -45,7 +45,7 @@ public class PlayerControlle : MonoBehaviour
 
         if (dir == Vector3.zero)
         {
-            m_rb.velocity = new Vector3(0, m_rb.velocity.y, 0);
+            _rb.velocity = new Vector3(0, _rb.velocity.y, 0);
         }
         else
         {
@@ -56,15 +56,15 @@ public class PlayerControlle : MonoBehaviour
 
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                Vector3 dashvelo = this.transform.forward * m_dashspeed;
-                dashvelo.y = m_rb.velocity.y;
-                m_rb.velocity = dashvelo;
+                Vector3 dashvelo = this.transform.forward * _dashspeed;
+                dashvelo.y = _rb.velocity.y;
+                _rb.velocity = dashvelo;
             }
             else
             {
-                Vector3 velo = this.transform.forward * m_speed;
-                velo.y = m_rb.velocity.y;
-                m_rb.velocity = velo;
+                Vector3 velo = this.transform.forward * _speed;
+                velo.y = _rb.velocity.y;
+                _rb.velocity = velo;
             }
             
 
@@ -73,7 +73,7 @@ public class PlayerControlle : MonoBehaviour
 
     private void Attack()
     {
-        switch (m_nowWepone)
+        switch (_nowWepone)
         {
             case AttackType.Gun:
                 GunAttack();
@@ -93,23 +93,22 @@ public class PlayerControlle : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            m_nowWepone = AttackType.Gun;
+            _nowWepone = AttackType.Gun;
             Debug.Log("getkey1");
-            Debug.Log(m_nowWepone);
+            Debug.Log(_nowWepone);
         }
         else if(Input.GetKeyDown(KeyCode.Alpha2))
         {
-            m_nowWepone = AttackType.Canon;
+            _nowWepone = AttackType.Canon;
             Debug.Log("getkey2");
-            Debug.Log(m_nowWepone);
+            Debug.Log(_nowWepone);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            m_nowWepone = AttackType.Knife;
+            _nowWepone = AttackType.Knife;
             Debug.Log("getkey3");
-            Debug.Log(m_nowWepone);
+            Debug.Log(_nowWepone);
         }
-       
     }
 
     private void GunAttack()
@@ -117,20 +116,20 @@ public class PlayerControlle : MonoBehaviour
         Aim();
         if (Input.GetKeyDown(KeyCode.R))
         {
-            StartCoroutine(m_base.Reload());
+            StartCoroutine(_base.Reload());
         }
         if (Input.GetButton("Fire1"))
         {
-            m_base.Fire();
+            _base.Fire();
         }
     }
 
     private void Aim()
     {
-        Ray ray = Camera.main.ScreenPointToRay(m_closeHeare.rectTransform.position);
+        Ray ray = Camera.main.ScreenPointToRay(_closeHeare.rectTransform.position);
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.red);
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, m_distance, m_hitLayer))
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, _distance, _hitLayer))
         {
             if (hit.collider.CompareTag("Enemy"))
             {
@@ -166,13 +165,13 @@ public class PlayerControlle : MonoBehaviour
 
     private void IsCursor()
     {
-        if (m_isCursor)
+        if (_isCursor)
         {
             if (Input.GetButtonDown("Fire1"))
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                m_isCursor = false;
+                _isCursor = false;
             }
         }
         else
@@ -181,7 +180,7 @@ public class PlayerControlle : MonoBehaviour
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                m_isCursor = true;
+                _isCursor = true;
             }
         }
     }
