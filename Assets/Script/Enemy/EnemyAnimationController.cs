@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyAnimationController : MonoBehaviour
@@ -47,7 +45,7 @@ public class EnemyAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateSpeedParameters();
+        if (EnemySclipt.IsNavgation) UpdateSpeedParameters();
         //デバック用
         if (Input.GetKeyDown(KeyCode.A))
         {

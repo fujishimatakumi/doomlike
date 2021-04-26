@@ -1,60 +1,82 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemySclipt : MonoBehaviour
 {
-    [SerializeField] EnemyDataObject m_enemyData;
+    [SerializeField] EnemyDataObject _enemyData;
    // [SerializeField] int m_initHP = 100;
     //[SerializeField] int m_score = 100;
    // [SerializeField] GameObject m_target;
     //エネミーがターゲットの位置を更新するために必要な移動距離
-    [SerializeField] float m_updateMag;
-    int m_nowHP;
-    NavMeshAgent m_agent;
+    [SerializeField] float _updateMag;
+    int _nowHP;
+    NavMeshAgent _agent;
+    //デバック用：NavMeshAgentを使用するかどうか
+    [SerializeField]static bool _isNavgation;
+
+    public static bool IsNavgation => _isNavgation;
+
+
+    //デバック用
+    EnemyAnimationController _animcontroller;
     // Start is called before the first frame update
     void Start()
     {
-        m_nowHP = m_enemyData.GetEnemyData(0).InitHP;
-        m_agent = GetComponent<NavMeshAgent>();
-        m_enemyData.GetEnemyData(0).SetTarget();
-        m_agent.SetDestination(m_enemyData.GetEnemyData(0).TargetPos);
+        _nowHP = _enemyData.GetEnemyData(0).InitHP;
+        _agent = GetComponent<NavMeshAgent>();
+        _enemyData.GetEnemyData(0).SetTarget();
+        //m_agent.SetDestination(m_enemyData.GetEnemyData(0).TargetPos);
+        _animcontroller = GetComponent<EnemyAnimationController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateDestination();
+       if(_isNavgation) UpdateDestination();
     }
 
+    //プレイヤーと自身の距離が_updateMagより短くなったらプレイヤーを追うのをやめる
+    //Bug:_updateMagより距離が短くなってもプレイヤーを追ってしまう
     private void UpdateDestination()
     {
-        if (Vector3.Distance(m_agent.destination, m_enemyData.GetEnemyData(0).TargetPos) > m_updateMag)
+        if (Vector3.Distance(_agent.destination, _enemyData.GetEnemyData(0).TargetPos) > _updateMag)
         {
-            m_agent.SetDestination(m_enemyData.GetEnemyData(0).TargetPos);
+            _agent.SetDestination(_enemyData.GetEnemyData(0).TargetPos);
         }
     }
 
+    /// <summary>
+    /// エネミーのHPを減らす関数
+    /// HPが０以下になったらデストロイする
+    /// </summary>
+    /// <param name="damage"></param>
     public void Damage(int damage) 
     {
-        m_nowHP -= damage;
-        CheckHP();
-    }
-
-    private void CheckHP()
-    {
-        if (m_nowHP <= 0)
+        if (_nowHP - damage <= 0)
         {
             Destroy();
         }
+        _nowHP -= damage;
     }
 
+    /// <summary>
+    /// エネミーオブジェクトを破棄する処理
+    /// TODO：オブジェクトプールを行ったほうが良い？
+    /// </summary>
     private void Destroy()
     {
-        GameManager gm = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
-        gm.AddScore(m_enemyData.GetEnemyData(0).Score);
-        Destroy(this.gameObject);
+        GameManager gm = FindObjectOfType<GameManager>();
+        //ゲームマネージャーがない場合でもエラーをはかないようにするため（テストシーン用）
+        if (gm)
+        {
+            gm.AddScore(_enemyData.GetEnemyData(0).Score);
+        }
+
+        //デストロイ時アニメーション処理
+        EnemyAnimationController EAnimController = GetComponent<EnemyAnimationController>();
+        EAnimController.OnActionParamater(EnemyActionParameterName.FallingBack);
+
+        //Destroy(this.gameObject);
     }
 
     private void FindPlayer()
